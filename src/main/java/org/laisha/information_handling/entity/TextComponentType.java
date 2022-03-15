@@ -3,7 +3,7 @@ package org.laisha.information_handling.entity;
 public enum TextComponentType {
 
     TEXT("", ""),
-    PARAGRAPH("\t\t\t", "\n"),
+    PARAGRAPH("\t", "\n"),
     SENTENCE("", ""),
     LEXEME("", " "),
     WORD("", ""),
