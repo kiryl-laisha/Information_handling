@@ -10,8 +10,10 @@ import java.util.regex.Pattern;
 
 public class WordAndPunctuationParser extends AbstractTextParser {
 
+    private static final String PUNCTUATION_AND_NEW_LINE_MARK_REGEXP = "[\\p{Punct}\\n]";
     private static final String WORD_REGEXP = "[\\w]+";
-    private static final String WORD_OR_PUNCTUATION_REGEXP = WORD_REGEXP + "|[\\p{Punct}]";
+    private static final String COMPLEX_REGEXP =
+            WORD_REGEXP + "|" + PUNCTUATION_AND_NEW_LINE_MARK_REGEXP;
 
     public WordAndPunctuationParser() {
         nextParser = new LetterParser();
@@ -20,7 +22,7 @@ public class WordAndPunctuationParser extends AbstractTextParser {
     @Override
     public void parse(TextComponent component, String data) {
 
-        Pattern pattern = Pattern.compile(WORD_OR_PUNCTUATION_REGEXP);
+        Pattern pattern = Pattern.compile(COMPLEX_REGEXP);
         Matcher matcher = pattern.matcher(data);
         while (matcher.find()) {
             String currentComponent = matcher.group();

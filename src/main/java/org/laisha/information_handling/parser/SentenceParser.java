@@ -6,7 +6,7 @@ import org.laisha.information_handling.entity.TextComposite;
 
 public class SentenceParser extends AbstractTextParser {
 
-    private static final String SENTENCE_DELIMITER_REGEX = "(?<=[.!?])\\s(?=\\p{Upper})";
+    private static final String SENTENCE_DELIMITER_REGEX = "(?<=[.!?])\\s(?=\\S)";
 
     public SentenceParser() {
         this.nextParser = new LexemeParser();

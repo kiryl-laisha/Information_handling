@@ -55,7 +55,6 @@ class ParagraphParserTest {
         }
         parser.parse(component, data);
         int expected = 4;
-
         int actual = component.getComponents().size();
         System.out.println(component.getComponents().toString());
         assertEquals(expected, actual);
