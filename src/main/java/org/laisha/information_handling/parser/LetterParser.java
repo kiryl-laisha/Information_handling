@@ -2,7 +2,7 @@ package org.laisha.information_handling.parser;
 
 import org.laisha.information_handling.entity.TextComponent;
 import org.laisha.information_handling.entity.TextComponentType;
-import org.laisha.information_handling.entity.TextLeaf;
+import org.laisha.information_handling.entity.Symbol;
 
 public class LetterParser extends AbstractTextParser {
 
@@ -11,7 +11,7 @@ public class LetterParser extends AbstractTextParser {
 
         char[] letters = data.toCharArray();
         for (char letter : letters) {
-            component.add(new TextLeaf(letter, TextComponentType.LETTER));
+            component.add(new Symbol(letter, TextComponentType.LETTER));
         }
     }
 }

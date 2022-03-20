@@ -3,7 +3,7 @@ package org.laisha.information_handling.parser;
 import org.laisha.information_handling.entity.TextComponent;
 import org.laisha.information_handling.entity.TextComponentType;
 import org.laisha.information_handling.entity.TextComposite;
-import org.laisha.information_handling.entity.TextLeaf;
+import org.laisha.information_handling.entity.Symbol;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,8 +31,8 @@ public class WordAndPunctuationParser extends AbstractTextParser {
                 component.add(wordComponent);
                 nextParser.parse(wordComponent, matcher.group());
             } else {
-                TextLeaf punctuationMark =
-                        new TextLeaf(matcher.group().charAt(0), TextComponentType.PUNCTUATION_MARK);
+                Symbol punctuationMark =
+                        new Symbol(matcher.group().charAt(0), TextComponentType.PUNCTUATION_MARK);
                 component.add(punctuationMark);
             }
         }

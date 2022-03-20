@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.laisha.information_handling.entity.TextComponent;
 import org.laisha.information_handling.entity.TextComponentType;
 import org.laisha.information_handling.entity.TextComposite;
-import org.laisha.information_handling.entity.TextLeaf;
+import org.laisha.information_handling.entity.Symbol;
 import org.laisha.information_handling.exception.ProjectException;
 import org.laisha.information_handling.parser.AbstractTextParser;
 import org.laisha.information_handling.parser.LexemeParser;
@@ -76,7 +76,7 @@ class TextServiceImplTest {
             "an instance of TextComposite.")
     void sortParagraphsBySentenceNumberFirstNegativeTest() {
 
-        component = new TextLeaf('a', TextComponentType.LETTER);
+        component = new Symbol('a', TextComponentType.LETTER);
         String expectedExceptionMessage = "Invalid object class.";
         String actualExceptionMessage = null;
         try {

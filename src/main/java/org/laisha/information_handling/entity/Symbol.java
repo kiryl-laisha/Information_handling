@@ -2,12 +2,12 @@ package org.laisha.information_handling.entity;
 
 import java.util.List;
 
-public class TextLeaf implements TextComponent {
+public class Symbol implements TextComponent {
 
     private final char character;
     private final TextComponentType type;
 
-    public TextLeaf(char character, TextComponentType type) {
+    public Symbol(char character, TextComponentType type) {
 
         this.character = character;
         this.type = type;
@@ -45,11 +45,11 @@ public class TextLeaf implements TextComponent {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        TextLeaf textLeaf = (TextLeaf) obj;
-        if (character != textLeaf.character) {
+        Symbol symbol = (Symbol) obj;
+        if (character != symbol.character) {
             return false;
         }
-        return type == textLeaf.type;
+        return type == symbol.type;
     }
 
     @Override
