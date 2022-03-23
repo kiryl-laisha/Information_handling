@@ -39,50 +39,50 @@ public class ArithmeticExpressionCalculationImpl implements ArithmeticExpression
         expression = expression.strip();
         int i = 0;
         while (i < expression.length()) {
-            lbl:
-            {
-                char currentChar = expression.charAt(i);
-                if (' ' == currentChar) {
-                    break lbl;
+            char currentChar = expression.charAt(i);
+            if (' ' == currentChar) {
+                i++;
+                continue;
+            }
+            if (Character.isDigit(currentChar)) {
+                int lastIndexOfCurrentNumber = findLastIndexOfCurrentNumber(expression, i);
+                String currentNumberString;
+                if (lastIndexOfCurrentNumber == expression.length() - 1) {
+                    currentNumberString = expression.substring(i);
+                } else {
+                    currentNumberString = expression.substring(i, lastIndexOfCurrentNumber + 1);
                 }
-                if (Character.isDigit(currentChar)) {
-                    int lastIndexOfCurrentNumber = findLastIndexOfCurrentNumber(expression, i);
-                    String currentNumberString;
-                    if (lastIndexOfCurrentNumber == expression.length() - 1) {
-                        currentNumberString = expression.substring(i);
-                    } else {
-                        currentNumberString = expression.substring(i, lastIndexOfCurrentNumber + 1);
-                    }
-                    postfixNotation.append(currentNumberString).append(ELEMENT_DELIMITER);
-                    i = lastIndexOfCurrentNumber;
-                    break lbl;
+                postfixNotation.append(currentNumberString).append(ELEMENT_DELIMITER);
+                i = lastIndexOfCurrentNumber + 1;
+                continue;
+            }
+            if (currentChar == '(') {
+                stack.push(String.valueOf(currentChar));
+                i++;
+                continue;
+            }
+            if (currentChar == ')') {
+                while (!(stack.isEmpty() || stack.peek().equals("("))) {
+                    postfixNotation.append(stack.pop()).append(ELEMENT_DELIMITER);
                 }
-                if (currentChar == '(') {
-                    stack.push(String.valueOf(currentChar));
-                    break lbl;
-                }
-                if (currentChar == ')') {
-                    while (!(stack.isEmpty() || stack.peek().equals("("))) {
+                stack.pop();
+                i++;
+                continue;
+            }
+            if (String.valueOf(currentChar).matches(ARITHMETIC_OPERATOR_REGEX)) {
+                if (currentChar == '-' &&
+                        (i == 0 || (i > 1 &&
+                                String.valueOf(expression.charAt(i - 1))
+                                        .matches(ARITHMETIC_OPERATOR_AND_OPENING_BRACKET_REGEX)))) {
+                    currentChar = '~';//like unary minus
+                } else {
+                    while (!stack.isEmpty() &&
+                            definePriority(currentChar) <=
+                                    definePriority(stack.peek().toCharArray()[0])) {
                         postfixNotation.append(stack.pop()).append(ELEMENT_DELIMITER);
                     }
-                    stack.pop();
-                    break lbl;
                 }
-                if (String.valueOf(currentChar).matches(ARITHMETIC_OPERATOR_REGEX)) {
-                    if (currentChar == '-' &&
-                            (i == 0 || (i > 1 &&
-                                    String.valueOf(expression.charAt(i - 1))
-                                            .matches(ARITHMETIC_OPERATOR_AND_OPENING_BRACKET_REGEX)))) {
-                        currentChar = '~';//like unary minus
-                    } else {
-                        while (!stack.isEmpty() &&
-                                definePriority(currentChar) <=
-                                        definePriority(stack.peek().toCharArray()[0])) {
-                            postfixNotation.append(stack.pop()).append(ELEMENT_DELIMITER);
-                        }
-                    }
-                    stack.push(String.valueOf(currentChar));
-                }
+                stack.push(String.valueOf(currentChar));
             }
             i++;
         }
@@ -107,33 +107,32 @@ public class ArithmeticExpressionCalculationImpl implements ArithmeticExpression
         postfixNotation = postfixNotation.strip();
         int i = 0;
         while (i < postfixNotation.length()) {
-            lbl:
-            {
-                char currentChar = postfixNotation.charAt(i);
-                if (' ' == currentChar) {
-                    break lbl;
-                }
-                if (Character.isDigit(currentChar)) {
-                    int lastIndexOfCurrentNumber = findLastIndexOfCurrentNumber(postfixNotation, i);
-                    String currentNumberString;
-                    if (lastIndexOfCurrentNumber == postfixNotation.length() - 1) {
-                        currentNumberString = postfixNotation.substring(i);
-                    } else {
-                        currentNumberString = postfixNotation.substring(i, lastIndexOfCurrentNumber + 1);
-                    }
-                    stack.push(Double.parseDouble(currentNumberString));
-                    i = lastIndexOfCurrentNumber;
-                    break lbl;
-                }
-                double secondNumber = stack.pop();
-                double firstNumber;
-                if (String.valueOf(currentChar).matches(ARITHMETIC_OPERATOR_REGEX)) {
-                    firstNumber = stack.pop();
-                } else {
-                    firstNumber = 0;
-                }
-                stack.push(calculateLocalExpression(currentChar, firstNumber, secondNumber));
+            char currentChar = postfixNotation.charAt(i);
+            if (' ' == currentChar) {
+                i++;
+                continue;
             }
+            if (Character.isDigit(currentChar)) {
+                int lastIndexOfCurrentNumber = findLastIndexOfCurrentNumber(postfixNotation, i);
+                String currentNumberString;
+                if (lastIndexOfCurrentNumber == postfixNotation.length() - 1) {
+                    currentNumberString = postfixNotation.substring(i);
+                } else {
+                    currentNumberString = postfixNotation.substring(i, lastIndexOfCurrentNumber + 1);
+                }
+                stack.push(Double.parseDouble(currentNumberString));
+                i = lastIndexOfCurrentNumber;
+                i++;
+                continue;
+            }
+            double secondNumber = stack.pop();
+            double firstNumber;
+            if (String.valueOf(currentChar).matches(ARITHMETIC_OPERATOR_REGEX)) {
+                firstNumber = stack.pop();
+            } else {
+                firstNumber = 0;
+            }
+            stack.push(calculateLocalExpression(currentChar, firstNumber, secondNumber));
             i++;
         }
         return OptionalDouble.of(stack.pop());
