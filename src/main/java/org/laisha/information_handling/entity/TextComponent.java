@@ -11,4 +11,6 @@ public interface TextComponent {
     List<TextComponent> getComponents();
 
     TextComponentType getType();
+
+    String toString();
 }
