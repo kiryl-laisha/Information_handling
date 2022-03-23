@@ -139,12 +139,12 @@ public class ArithmeticExpressionCalculationImpl implements ArithmeticExpression
         return OptionalDouble.of(stack.pop());
     }
 
-    private Double calculateLocalExpression(char currentChar,
+    private Double calculateLocalExpression(char operator,
                                             double firstNumber,
                                             double secondNumber) {
 
         double result;
-        switch (currentChar) {
+        switch (operator) {
             case '+':
                 result = firstNumber + secondNumber;
                 break;

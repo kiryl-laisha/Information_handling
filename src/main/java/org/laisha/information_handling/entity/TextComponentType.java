@@ -14,6 +14,7 @@ public enum TextComponentType {
     private final String postfix;
 
     TextComponentType(String prefix, String postfix) {
+
         this.prefix = prefix;
         this.postfix = postfix;
     }
